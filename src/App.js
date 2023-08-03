@@ -1,24 +1,100 @@
-import logo from './logo.svg';
 import './App.css';
-
+import list from './untils/list';
+import { useEffect, useState } from 'react';
 function App() {
+  const [input, setInput] = useState('');
+  const [search, setSearch] = useState([]);
+  const [isName, setName] = useState('');
+  const [isArticle, setArticle] = useState('');
+  const [isPlace, setPlace] = useState([]);
+  const [searchList, setSearchList] = useState([]);
+
+  const hendlerSearch = (evt) => {
+    evt.preventDefault();
+    const find = [];
+    list.map((item) => {
+      if (item.art === input) {
+        find.push(item);
+      } else {
+        setName('');
+        setArticle('Ничего не найдено');
+        setPlace('');
+      }
+      return setSearch(find);
+    });
+  };
+
+  useEffect(() => {
+    if (search) {
+      const place = [];
+      search.map((item) => {
+        setName(item.name);
+        setArticle(item.art);
+        place.push(item.place);
+        setPlace(place);
+      });
+    }
+  }, [setName, search]);
+
+  useEffect(() => {
+    if (list) {
+      const table = {};
+      const res = list.filter(({ art }) => !table[art] && (table[art] = 1));
+      setSearchList(res);
+    }
+  }, []);
+  console.log(searchList);
+  const handlerChange = (evt) => {
+    setInput(evt.target.value);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <main className='main'>
+      <header className='header'>
+        <div className='header__time'>00 : 00</div>
       </header>
-    </div>
+      <form className='form' onSubmit={hendlerSearch}>
+        <input
+          type='search'
+          className='input'
+          placeholder='Введите артикул'
+          onChange={handlerChange}
+          list='data'
+        />
+        <datalist id='data'>
+          {
+            searchList.map(item=>{
+              return <option value={item.art}>{item.name}</option>
+            })
+          }
+        </datalist>
+        <button className='button' type='submit'>
+          Отправить
+        </button>
+      </form>
+      <div className='block'>
+        <h2 className='block__title'>Артикул:</h2>
+        <span className='block__span block__span_type-article'>
+          {isArticle || 'Ничего не найдено'}
+        </span>
+      </div>
+      <div className='block block_place'>
+        <h2 className='block__title'>Стелаж:</h2>
+        {isPlace.length > 0 ? (
+          isPlace.map((item) => {
+            return (
+              <span className='block__span block__span_type-place'>{item}</span>
+            );
+          })
+        ) : (
+          <span className='block__span block__span_type-place'></span>
+        )}
+      </div>
+      <div className='block'>
+        <h2 className='block__title'>Наименование:</h2>
+        <span className='block__span block__span_type-name'>{isName}</span>
+      </div>
+    </main>
   );
 }
 

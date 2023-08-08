@@ -1,6 +1,8 @@
+/* eslint-disable array-callback-return */
 import './App.css';
 import list from './untils/list';
 import { useEffect, useState } from 'react';
+import Select from 'react-select';
 function App() {
   const [input, setInput] = useState('');
   const [search, setSearch] = useState([]);
@@ -43,10 +45,18 @@ function App() {
       setSearchList(res);
     }
   }, []);
-  console.log(searchList);
-  const handlerChange = (evt) => {
-    setInput(evt.target.value);
-  };
+  const [option, setOption] = useState([])
+  useEffect(()=>{
+    const arr = []
+    searchList.map(item=>{
+      arr.push({value: item.art, label: item.name})
+      setOption(arr)
+    })
+  },[searchList])
+
+  // const handlerChange = (evt) => {
+  //   setInput(evt.target.value);
+  // };
 
   return (
     <main className='main'>
@@ -54,20 +64,20 @@ function App() {
         <div className='header__time'>00 : 00</div>
       </header>
       <form className='form' onSubmit={hendlerSearch}>
-        <input
-          type='search'
+        {/* <input
           className='input'
           placeholder='Введите артикул'
           onChange={handlerChange}
           list='data'
+          inputMode='numeric'
+          autoComplete='on'
         />
-        <datalist id='data'>
-          {
-            searchList.map(item=>{
-              return <option value={item.art}>{item.name}</option>
-            })
-          }
-        </datalist>
+        <datalist id='data' className='option'>
+          {searchList.map((item) => {
+            return <option value={item.art}>{item.name}</option>;
+          })}
+        </datalist> */}
+        <Select options={option} onChange={evt=>{setInput(evt.value)}}></Select>
         <button className='button' type='submit'>
           Отправить
         </button>

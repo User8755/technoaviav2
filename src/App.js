@@ -45,14 +45,14 @@ function App() {
       setSearchList(res);
     }
   }, []);
-  const [option, setOption] = useState([])
-  useEffect(()=>{
-    const arr = []
-    searchList.map(item=>{
-      arr.push({value: item.art, label: item.name})
-      setOption(arr)
-    })
-  },[searchList])
+  const [option, setOption] = useState([]);
+  useEffect(() => {
+    const arr = [];
+    searchList.map((item) => {
+      arr.push({ value: item.art, label: item.name });
+      setOption(arr);
+    });
+  }, [searchList]);
 
   // const handlerChange = (evt) => {
   //   setInput(evt.target.value);
@@ -60,11 +60,10 @@ function App() {
 
   return (
     <main className='main'>
-      <header className='header'>
-        <div className='header__time'>00 : 00</div>
-      </header>
-      <form className='form' onSubmit={hendlerSearch}>
-        {/* <input
+      <div className='wrapper'>
+        <header className='header'></header>
+        <form className='form' onSubmit={hendlerSearch}>
+          {/* <input
           className='input'
           placeholder='Введите артикул'
           onChange={handlerChange}
@@ -77,32 +76,42 @@ function App() {
             return <option value={item.art}>{item.name}</option>;
           })}
         </datalist> */}
-        <Select options={option} onChange={evt=>{setInput(evt.value)}}></Select>
-        <button className='button' type='submit'>
-          Отправить
-        </button>
-      </form>
-      <div className='block'>
-        <h2 className='block__title'>Артикул:</h2>
-        <span className='block__span block__span_type-article'>
-          {isArticle || 'Ничего не найдено'}
-        </span>
-      </div>
-      <div className='block block_place'>
-        <h2 className='block__title'>Стелаж:</h2>
-        {isPlace.length > 0 ? (
-          isPlace.map((item) => {
-            return (
-              <span className='block__span block__span_type-place'>{item}</span>
-            );
-          })
-        ) : (
-          <span className='block__span block__span_type-place'></span>
-        )}
-      </div>
-      <div className='block'>
-        <h2 className='block__title'>Наименование:</h2>
-        <span className='block__span block__span_type-name'>{isName}</span>
+          <Select
+            options={option}
+            onChange={(evt) => {
+              setInput(evt.value);
+            }}
+            className='react-select-container'
+            classNamePrefix='react-select'
+          ></Select>
+          <button className='button' type='submit'>
+            Отправить
+          </button>
+        </form>
+        <div className='block block_article'>
+          <h2 className='block__title'>Артикул:</h2>
+          <span className='block__span block__span_type-article'>
+            {isArticle || 'Ничего не найдено'}
+          </span>
+        </div>
+        <div className='block block_place'>
+          <h2 className='block__title'>Стеллаж:</h2>
+          {isPlace.length > 0 ? (
+            isPlace.map((item) => {
+              return (
+                <span className='block__span block__span_type-place'>
+                  {item}
+                </span>
+              );
+            })
+          ) : (
+            <span className='block__span block__span_type-place'></span>
+          )}
+        </div>
+        <div className='block'>
+          <h2 className='block__title'>Наименование:</h2>
+          <span className='block__span block__span_type-name'>{isName}</span>
+        </div>
       </div>
     </main>
   );

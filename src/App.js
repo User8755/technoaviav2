@@ -54,28 +54,11 @@ function App() {
     });
   }, [searchList]);
 
-  // const handlerChange = (evt) => {
-  //   setInput(evt.target.value);
-  // };
-
   return (
     <main className='main'>
       <div className='wrapper'>
         <header className='header'></header>
         <form className='form' onSubmit={hendlerSearch}>
-          {/* <input
-          className='input'
-          placeholder='Введите артикул'
-          onChange={handlerChange}
-          list='data'
-          inputMode='numeric'
-          autoComplete='on'
-        />
-        <datalist id='data' className='option'>
-          {searchList.map((item) => {
-            return <option value={item.art}>{item.name}</option>;
-          })}
-        </datalist> */}
           <Select
             options={option}
             onChange={(evt) => {
@@ -112,6 +95,7 @@ function App() {
           <h2 className='block__title'>Наименование:</h2>
           <span className='block__span block__span_type-name'>{isName}</span>
         </div>
+        <p className='update'>Обвновлено 08.12</p>
       </div>
     </main>
   );

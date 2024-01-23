@@ -95,7 +95,7 @@ function App() {
           <h2 className='block__title'>Наименование:</h2>
           <span className='block__span block__span_type-name'>{isName}</span>
         </div>
-        <p className='update'>Обвновлено 08.12</p>
+        <p className='update'>Обновлено 23.01.24</p>
       </div>
     </main>
   );

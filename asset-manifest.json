@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/technoaviav2/static/css/main.3e3de917.css",
-    "main.js": "/technoaviav2/static/js/main.03a22be2.js",
+    "main.js": "/technoaviav2/static/js/main.541444f9.js",
     "static/js/787.b2528059.chunk.js": "/technoaviav2/static/js/787.b2528059.chunk.js",
     "index.html": "/technoaviav2/index.html",
     "main.3e3de917.css.map": "/technoaviav2/static/css/main.3e3de917.css.map",
-    "main.03a22be2.js.map": "/technoaviav2/static/js/main.03a22be2.js.map",
+    "main.541444f9.js.map": "/technoaviav2/static/js/main.541444f9.js.map",
     "787.b2528059.chunk.js.map": "/technoaviav2/static/js/787.b2528059.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.3e3de917.css",
-    "static/js/main.03a22be2.js"
+    "static/js/main.541444f9.js"
   ]
 }

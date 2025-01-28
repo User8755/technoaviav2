@@ -1,86 +1,67 @@
-/* eslint-disable array-callback-return */
 import './App.css';
-import list from './untils/list';
 import { useEffect, useState } from 'react';
 import Select from 'react-select';
-function App() {
-  const [input, setInput] = useState('');
-  const [search, setSearch] = useState([]);
-  const [isName, setName] = useState('');
-  const [isArticle, setArticle] = useState('');
-  const [isPlace, setPlace] = useState([]);
-  const [searchList, setSearchList] = useState([]);
+import axios from 'axios';
 
-  const hendlerSearch = (evt) => {
-    evt.preventDefault();
-    const find = [];
-    list.map((item) => {
-      if (item.art === input) {
-        find.push(item);
-      } else {
-        setName('');
-        setArticle('Ничего не найдено');
-        setPlace('');
-      }
-      return setSearch(find);
-    });
+function App() {
+  const [article, setArticle] = useState({
+    art: '',
+    name: '',
+    place: [],
+  });
+  const [list, setList] = useState([]);
+  const [status, setStatus] = useState('');
+
+  useEffect(() => {
+    axios
+      .get(`https://form.tafontend.online/`)
+      .then((d) => setList(d.data))
+      .catch((d) => console.log(d));
+  }, []);
+
+  const hendlerSendFile = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    const fileField = document.querySelector('input[type="file"]');
+    const file = fileField.files[0];
+
+    formData.append('file', file);
+
+    axios
+      .post(`https://form.tafontend.online/`, formData)
+      .then((i) => setStatus('Успешно'))
+      .catch((e) => setStatus(e.response.data.message))
+      .finally(() => {
+        e.target.reset();
+      });
   };
 
-  useEffect(() => {
-    if (search) {
-      const place = [];
-      search.map((item) => {
-        setName(item.name);
-        setArticle(item.art);
-        place.push(item.place);
-        setPlace(place);
-      });
-    }
-  }, [setName, search]);
-
-  useEffect(() => {
-    if (list) {
-      const table = {};
-      const res = list.filter(({ art }) => !table[art] && (table[art] = 1));
-      setSearchList(res);
-    }
-  }, []);
-  const [option, setOption] = useState([]);
-  useEffect(() => {
-    const arr = [];
-    searchList.map((item) => {
-      arr.push({ value: item.art, label: item.name });
-      setOption(arr);
-    });
-  }, [searchList]);
+  list.forEach((i) => (i.label = `Артикул: ${i.art}; ${i.name}`));
 
   return (
     <main className='main'>
       <div className='wrapper'>
         <header className='header'></header>
-        <form className='form' onSubmit={hendlerSearch}>
+        <form className='form'>
           <Select
-            options={option}
+            options={list}
             onChange={(evt) => {
-              setInput(evt.value);
+              setArticle(evt);
             }}
             className='react-select-container'
             classNamePrefix='react-select'
           ></Select>
-          <button className='button' type='submit'>
-            Отправить
-          </button>
         </form>
         <div className='block block_article'>
           <h2 className='block__title'>Артикул:</h2>
           <span className='block__span block__span_type-article'>
-            {isArticle || 'Ничего не найдено'}
+            {article.art || 'Ничего не найдено'}
           </span>
         </div>
         <div className='block block_place'>
           <h2 className='block__title'>Стеллаж:</h2>
-          {isPlace.length > 0 ? (
-            isPlace.map((item) => {
+          {article.place.length > 0 ? (
+            article.place.map((item) => {
               return (
                 <span className='block__span block__span_type-place'>
                   {item}
@@ -93,9 +74,19 @@ function App() {
         </div>
         <div className='block'>
           <h2 className='block__title'>Наименование:</h2>
-          <span className='block__span block__span_type-name'>{isName}</span>
+          <span className='block__span block__span_type-name'>
+            {article.name}
+          </span>
         </div>
-        <p className='update'>Обновлено 23.01.24</p>
+        {navigator.maxTouchPoints > 0 && 'orientation' in window ? null : (
+          <form className='form__update_value' onSubmit={hendlerSendFile}>
+            <input type='file' accept='.xlsx' />
+            <button type='submit' className='button_default button_color-green'>
+              Отправить
+            </button>
+            <span>{status}</span>
+          </form>
+        )}
       </div>
     </main>
   );

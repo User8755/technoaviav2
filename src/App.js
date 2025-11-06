@@ -14,7 +14,7 @@ function App() {
 
   useEffect(() => {
     axios
-      .get(`https://form.tafontend.online/`)
+      .get(`https://form.tafontend.ru/`)
       .then((d) => setList(d.data))
       .catch((d) => console.log(d));
   }, []);
